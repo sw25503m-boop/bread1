@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>まちのパン工房｜プロモーションアプリ</title>
+  <style>
+    :root{
+      --bg:#faf7f2;
+      --card:#ffffff;
+      --ink:#1d1d1f;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#c27b38;
+      --accent2:#8b5cf6;
+      --good:#16a34a;
+      --warn:#b45309;
+      --bad:#dc2626;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --radius:16px;
+      --radius2:12px;
+      --focus: 0 0 0 3px rgba(194,123,56,.25);
+      --maxw: 1100px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 600px at 10% 0%, rgba(194,123,56,.12), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(139,92,246,.10), transparent 55%),
+        var(--bg);
+    }
+
+    a{ color:inherit; }
+    button,input,select,textarea{ font:inherit; }
+
+    .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 22px 16px 40px; }
+
+    header{
+      background: rgba(255,255,255,.75);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(229,231,235,.7);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+    }
+
+    .head-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap: wrap;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      min-width: 260px;
+    }
+
+    .logo{
+      width:44px; height:44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(194,123,56,.95), rgba(194,123,56,.55));
+      display:grid; place-items:center;
+      box-shadow: 0 10px 20px rgba(194,123,56,.25);
+      flex: 0 0 auto;
+    }
+    .logo svg{ width:28px; height:28px; fill:#fff; }
+
+    .brand h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing: .02em;
+      line-height: 1.2;
+    }
+    .subline{
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .meta{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      text-align:right;
+      margin-left:auto;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.9);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1;
+    }
+    .pill strong{ color: var(--ink); font-weight: 700; }
+
+    .btn{
+      border:1px solid rgba(0,0,0,.08);
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,.06);
+      line-height: 1;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      color: var(--ink);
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 26px rgba(0,0,0,.10); }
+    .btn:active{ transform: translateY(0); }
+    .btn:focus{ outline:none; box-shadow: var(--shadow), var(--focus); }
+
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(194,123,56,.95), rgba(194,123,56,.75));
+      border-color: rgba(194,123,56,.25);
+      color:#fff;
+      box-shadow: 0 10px 26px rgba(194,123,56,.20);
+    }
+    .btn.primary:hover{ box-shadow: 0 14px 34px rgba(194,123,56,.28); }
+    .btn.ghost{
+      background: rgba(255,255,255,.75);
+    }
+    .btn.small{
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .btn .ico{
+      width:16px; height:16px; display:inline-block;
+    }
+    .btn .ico svg{ width:16px; height:16px; fill: currentColor; }
+
+    .grid{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .panel{
+      border:1px solid rgba(229,231,235,.85);
+      background: rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .controls{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .controls .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+
+    .field{
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 190px;
+      flex: 1 1 190px;
+    }
+
+    label{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    select,input[type="search"]{
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      outline:none;
+      transition: box-shadow .12s ease, border-color .12s ease;
+    }
+    select:focus,input[type="search"]:focus{ box-shadow: var(--focus); border-color: rgba(194,123,56,.35); }
+
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(1, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    @media (min-width: 740px){
+      .grid{ grid-template-columns: 380px 1fr; align-items:start; }
+      .cards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      header{ padding: 18px 20px; }
+    }
+    @media (min-width: 1020px){
+      .cards{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    .card{
+      border: 1px solid rgba(229,231,235,.9);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 8px 22px rgba(0,0,0,.06);
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      position: relative;
+      min-height: 210px;
+      display:flex;
+      flex-direction: column;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(0,0,0,.10);
+      border-color: rgba(194,123,56,.25);
+    }
+    .card:focus{
+      outline:none;
+      box-shadow: 0 14px 34px rgba(0,0,0,.10), var(--focus);
+    }
+
+    .card-top{
+      padding: 12px 12px 10px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+
+    .thumb{
+      width: 54px; height:54px;
+      border-radius: 14px;
+      background:
+        radial-gradient(24px 24px at 30% 30%, rgba(255,255,255,.8), transparent 60%),
+        linear-gradient(135deg, rgba(194,123,56,.25), rgba(139,92,246,.18));
+      border: 1px solid rgba(229,231,235,.9);
+      flex: 0 0 auto;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+    }
+    .thumb svg{ width:32px; height:32px; opacity:.8; }
+
+    .title{
+      display:flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+    .name{
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: .02em;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .meta2{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .tag{
+      font-size: 11px;
+      color: var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.85);
+      padding: 4px 8px;
+      border-radius: 999px;
+      line-height: 1;
+    }
+    .tag.new{
+      color:#fff;
+      border-color: rgba(22,163,74,.25);
+      background: linear-gradient(135deg, rgba(22,163,74,.9), rgba(22,163,74,.6));
+    }
+    .tag.low{
+      color:#fff;
+      border-color: rgba(180,83,9,.25);
+      background: linear-gradient(135deg, rgba(180,83,9,.9), rgba(180,83,9,.6));
+    }
+
+    .card-body{
+      padding: 0 12px 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1 1 auto;
+    }
+    .desc{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      min-height: 54px;
+    }
+    .price-row{
+      margin-top: auto;
+      display:flex;
+      justify-content: space-between;
+      align-items:flex-end;
+      gap: 8px;
+    }
+    .price{
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: .02em;
+    }
+    .rating{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .badge{
+      position:absolute;
+      top: 10px;
+      right: 10px;
+      display:none;
+      align-items:center;
+      gap:6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(194,123,56,.95), rgba(194,123,56,.70));
+      color:#fff;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid rgba(194,123,56,.25);
+      box-shadow: 0 12px 28px rgba(194,123,56,.22);
+    }
+    .badge.show{ display:inline-flex; }
+    .badge svg{ width:14px; height:14px; fill:#fff; }
+
+    .section-title{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .section-title h2{
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: .02em;
+    }
+    .count{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .empty{
+      padding: 18px;
+      border: 1px dashed rgba(107,114,128,.35);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: rgba(255,255,255,.7);
+      text-align:center;
+      line-height: 1.6;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(17,24,39,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modal-backdrop.show{
+      display:flex;
+      animation: fadeIn .15s ease;
+    }
+    @keyframes fadeIn{
+      from{ opacity: 0; }
+      to{ opacity: 1; }
+    }
+    .modal{
+      width:min(760px, 100%);
+      border-radius: 18px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(229,231,235,.9);
+      box-shadow: 0 24px 70px rgba(0,0,0,.25);
+      overflow:hidden;
+      transform: translateY(6px);
+      animation: popIn .16s ease forwards;
+    }
+    @keyframes popIn{
+      from{ transform: translateY(10px) scale(.99); opacity: .92; }
+      to{ transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .modal-head{
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid rgba(229,231,235,.9);
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap:10px;
+    }
+    .modal-head h3{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: .02em;
+    }
+    .modal-head .sub{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .modal-body{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 740px){
+      .modal-body{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .modal-card{
+      border: 1px solid rgba(229,231,235,.9);
+      border-radius: 16px;
+      background: rgba(255,255,255,.92);
+      padding: 12px;
+    }
+    .kv{
+      display:grid;
+      grid-template-columns: 110px 1fr;
+      gap: 8px 10px;
+      margin:0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .kv dt{ color: var(--muted); font-weight: 800; }
+    .kv dd{ margin:0; }
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+      padding: 12px 14px 14px;
+      border-top: 1px solid rgba(229,231,235,.9);
+      background: rgba(255,255,255,.92);
+    }
+
+    .close-x{
+      border:none;
+      background: transparent;
+      cursor:pointer;
+      padding: 8px;
+      border-radius: 10px;
+      color: var(--muted);
+    }
+    .close-x:hover{ background: rgba(107,114,128,.12); color: var(--ink); }
+    .close-x:focus{ outline:none; box-shadow: var(--focus); }
+
+    /* Reservation */
+    .form{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .form .frow{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    @media (min-width: 740px){
+      .form .frow.two{ grid-template-columns: 1fr 1fr; }
+    }
+    .input{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .input input, .input textarea{
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.95);
+      outline:none;
+    }
+    .input textarea{ min-height: 76px; resize: vertical; }
+    .input input:focus, .input textarea:focus{ box-shadow: var(--focus); border-color: rgba(194,123,56,.35); }
+    .err{
+      color: var(--bad);
+      font-size: 12px;
+      min-height: 16px;
+    }
+    .ok{
+      color: var(--good);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    /* SNS copy */
+    .sns{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .sns .box{
+      border: 1px solid rgba(229,231,235,.9);
+      background: rgba(255,255,255,.92);
+      border-radius: 14px;
+      padding: 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sns .box h4{
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: .02em;
+    }
+    .sns textarea{
+      width:100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.95);
+      min-height: 76px;
+      resize: vertical;
+      outline:none;
+    }
+    .sns textarea:focus{ box-shadow: var(--focus); border-color: rgba(194,123,56,.35); }
+    .sns .tools{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .len{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      background: rgba(17,24,39,.92);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      display:none;
+      align-items:center;
+      gap:8px;
+      z-index: 80;
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+      max-width: min(560px, 92vw);
+      line-height: 1.4;
+    }
+    .toast.show{ display:flex; animation: toastIn .15s ease; }
+    @keyframes toastIn{
+      from{ transform: translateX(-50%) translateY(6px); opacity: .92; }
+      to{ transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+
+    .reservation-summary{
+      margin-top: 12px;
+      border: 1px solid rgba(229,231,235,.9);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.92);
+      padding: 12px;
+    }
+    .reservation-summary h3{
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+    .summary-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    @media (min-width: 740px){
+      .summary-grid{ grid-template-columns: 1fr 1fr; }
+    }
+    .summary-item{
+      border: 1px solid rgba(229,231,235,.9);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.95);
+    }
+    .summary-item .k{ color: var(--muted); font-weight: 800; font-size: 12px; }
+    .summary-item .v{ margin-top: 4px; font-weight: 700; }
+
+    .sr-only{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header aria-label="ヘッダー">
+      <div class="head-row">
+        <div class="brand">
+          <div class="logo" aria-hidden="true" title="まちのパン工房">
+            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+              <path d="M12 2c3.8 0 6.9 2.5 6.9 5.6 0 .6-.1 1.2-.4 1.7 1.7.8 2.9 2.4 2.9 4.2 0 2.7-2.4 4.8-5.8 4.8H8.4C5 18.3 2.6 16.2 2.6 13.5c0-1.8 1.2-3.4 2.9-4.2-.3-.5-.4-1.1-.4-1.7C5.1 4.5 8.2 2 12 2Zm0 2c-2.7 0-4.9 1.7-4.9 3.6 0 .7.2 1.3.6 1.8.3.4.2 1-.3 1.2C5.7 11.2 4.6 12.2 4.6 13.5c0 1.5 1.7 2.8 3.8 2.8h7.2c2.1 0 3.8-1.3 3.8-2.8 0-1.3-1.1-2.3-2.8-2.9-.5-.2-.7-.8-.3-1.2.4-.5.6-1.1.6-1.8C16.9 5.7 14.7 4 12 4Z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 id="shopName">まちのパン工房</h1>
+            <div class="subline">
+              <span id="todayText">今日: --</span> ・ 営業時間: <strong>7:30-18:00</strong> ・ <strong>売り切れ注意</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="meta" aria-label="店舗メタ情報と操作">
+          <div class="pill" aria-label="今日の日付">
+            <span aria-hidden="true">📅</span>
+            <span><strong id="todayDate">----</strong></span>
+          </div>
+          <div class="pill" aria-label="選択中の商品">
+            <span aria-hidden="true">🥐</span>
+            <span>選択中: <strong id="selectedName">未選択</strong></span>
+          </div>
+          <button id="btnPick" class="btn primary" type="button" aria-label="本日のおすすめに更新">
+            <span class="ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.7H21l-5.4 4 2.1 6.8-5.7-4.1-5.7 4.1 2.1-6.8L3 8.7h6.6L12 2z"/></svg>
+            </span>
+            本日のおすすめに更新
+          </button>
+          <button id="btnScrollReservation" class="btn ghost" type="button" aria-label="予約内容へスクロール">
+            <span class="ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 2v16h10V4H7Zm2 3h6v2H9V7Zm0 4h6v2H9v-2Zm0 4h6v2H9v-2Z"/></svg>
+            </span>
+            予約内容
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid" aria-label="メインコンテンツ">
+      <aside class="panel" aria-label="絞り込み・並び替え">
+        <div class="controls">
+          <div class="section-title">
+            <h2>絞り込み・並び替え</h2>
+            <div class="count" id="resultCount">-- 件</div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="filterCategory">カテゴリ</label>
+              <select id="filterCategory" aria-label="カテゴリフィルタ">
+                <option value="all">全て</option>
+                <option value="食パン">食パン</option>
+                <option value="菓子パン">菓子パン</option>
+                <option value="惣菜パン">惣菜パン</option>
+                <option value="季節限定">季節限定</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="sortBy">並び替え</label>
+              <select id="sortBy" aria-label="並び替え">
+                <option value="popular">人気順</option>
+                <option value="priceAsc">価格安い順</option>
+                <option value="newest">新着順</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field" style="flex: 1 1 100%;">
+              <label for="searchText">検索（商品名・説明）</label>
+              <input id="searchText" type="search" placeholder="例：バター、カレー、りんご…" aria-label="検索" />
+            </div>
+          </div>
+
+          <div class="hint">
+            ヒント：カードをクリックすると詳細が開き、取り置き予約やSNS用コピーが生成できます。
+          </div>
+
+          <div class="reservation-summary" id="reservationSummary" aria-label="予約内容（保存されます）">
+            <div class="section-title" style="margin:0 0 8px;">
+              <h3>予約内容（保存されます）</h3>
+              <button id="btnClearReservation" class="btn small" type="button" aria-label="予約内容を消去">消去</button>
+            </div>
+            <div id="reservationEmpty" class="hint">まだ予約はありません。商品詳細から「取り置き予約」をお試しください。</div>
+            <div id="reservationList" class="summary-grid" style="display:none;"></div>
+          </div>
+
+          <div class="panel" style="padding:12px; box-shadow:none; background: rgba(255,255,255,.55);" aria-label="SNS用コピー">
+            <div class="section-title" style="margin:0 0 8px;">
+              <h2>SNS用コピー</h2>
+              <div class="count" id="snsInfo">未選択</div>
+            </div>
+            <div class="sns">
+              <div class="box">
+                <h4>X（旧Twitter）向け（100文字以内目安）</h4>
+                <textarea id="xCopy" readonly aria-label="X向けコピー"></textarea>
+                <div class="tools">
+                  <span class="len" id="xLen">0 文字</span>
+                  <button id="btnCopyX" class="btn small" type="button" aria-label="X向けコピーをコピー">
+                    <span class="ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1Zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H10V7h9v14Z"/></svg>
+                    </span>
+                    コピー
+                  </button>
+                </div>
+              </div>
+
+              <div class="box">
+                <h4>Instagram向け（120文字程度目安）</h4>
+                <textarea id="igCopy" readonly aria-label="Instagram向けコピー"></textarea>
+                <div class="tools">
+                  <span class="len" id="igLen">0 文字</span>
+                  <button id="btnCopyIG" class="btn small" type="button" aria-label="Instagram向けコピーをコピー">
+                    <span class="ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1Zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H10V7h9v14Z"/></svg>
+                    </span>
+                    コピー
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="hint" style="margin-top:10px;">
+              ※ テンプレート生成です。商品名や特徴はカード/詳細を選ぶだけで更新されます。
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel" aria-label="商品一覧">
+        <div class="section-title">
+          <h2>商品カード一覧</h2>
+          <div class="count" id="noticeText">本日のおすすめはバッジ表示されます</div>
+        </div>
+        <div id="cards" class="cards" aria-live="polite"></div>
+        <div id="emptyState" class="empty" style="display:none;">
+          条件に一致する商品がありません。<br />
+          フィルタや検索条件を変えてみてください。
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">商品詳細</h3>
+          <div class="sub" id="modalSub"></div>
+        </div>
+        <button class="close-x" id="btnCloseModal" type="button" aria-label="閉じる（Esc）">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="currentColor" d="M18.3 5.7a1 1 0 0 0-1.4 0L12 10.6 7.1 5.7A1 1 0 0 0 5.7 7.1l4.9 4.9-4.9 4.9a1 1 0 1 0 1.4 1.4l4.9-4.9 4.9 4.9a1 1 0 0 0 1.4-1.4l-4.9-4.9 4.9-4.9a1 1 0 0 0 0-1.4Z"/>
+          </svg>
+          <span class="sr-only">閉じる</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-card" aria-label="詳細情報">
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div class="thumb" aria-hidden="true" style="width:72px;height:72px;border-radius:18px;">
+              <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                <path fill="currentColor" d="M3 12c0-4.4 4-8 9-8s9 3.6 9 8-4 8-9 8-9-3.6-9-8Zm3.5 0c0 2.9 2.5 5.3 5.5 5.3s5.5-2.4 5.5-5.3S15 6.7 12 6.7 6.5 9.1 6.5 12Z"/>
+              </svg>
+            </div>
+            <div style="min-width:0;">
+              <div style="font-weight:900; font-size:18px; letter-spacing:.02em;" id="modalName">--</div>
+              <div style="margin-top:6px; color:var(--muted); font-size:13px;" id="modalDesc">--</div>
+            </div>
+          </div>
+
+          <hr style="border:none; border-top:1px solid rgba(229,231,235,.9); margin:12px 0;" />
+
+          <dl class="kv" id="modalKv">
+            <!-- injected -->
+          </dl>
+
+          <div style="margin-top: 10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <div class="pill" aria-label="人気度">
+              <span aria-hidden="true">⭐</span>
+              <span>人気度: <strong id="modalRating">-</strong></span>
+            </div>
+            <div class="pill" aria-label="在庫表示">
+              <span aria-hidden="true">🧺</span>
+              <span id="modalStockText">在庫: -</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-card" aria-label="取り置き予約（擬似）">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px;">
+            <div style="font-weight:900; letter-spacing:.02em;">取り置き予約（擬似）</div>
+            <div class="hint" id="formTargetName">対象: --</div>
+          </div>
+
+          <form id="reserveForm" class="form" novalidate>
+            <div class="frow two">
+              <div class="input">
+                <label for="rName">お名前（必須）</label>
+                <input id="rName" type="text" autocomplete="name" placeholder="例：山田 太郎" />
+                <div class="err" id="errName"></div>
+              </div>
+              <div class="input">
+                <label for="rPhone">電話番号（必須）</label>
+                <input id="rPhone" type="tel" autocomplete="tel" placeholder="例：09012345678" />
+                <div class="err" id="errPhone"></div>
+              </div>
+            </div>
+
+            <div class="frow two">
+              <div class="input">
+                <label for="rTime">受取希望時間（必須）</label>
+                <input id="rTime" type="time" />
+                <div class="err" id="errTime"></div>
+              </div>
+              <div class="input">
+                <label for="rQty">個数（必須）</label>
+                <input id="rQty" type="number" min="1" step="1" inputmode="numeric" placeholder="例：2" />
+                <div class="err" id="errQty"></div>
+              </div>
+            </div>
+
+            <div class="input">
+              <label for="rMemo">メモ（任意）</label>
+              <textarea id="rMemo" placeholder="例：アレルギー確認済み、急ぎで受け取りたい等"></textarea>
+              <div class="err" id="errMemo"></div>
+            </div>
+
+            <div id="reserveOk" class="ok" style="display:none;"></div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;">
+              <button id="btnSubmitReserve" class="btn primary" type="submit" aria-label="予約内容を保存（擬似送信）">
+                <span class="ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M2 12l19-9-5 19-5-7-9-3Zm9 3.7 7.8-7.8-9.6 4.5 1.8 3.3Z"/></svg>
+                </span>
+                予約内容を保存
+              </button>
+              <button id="btnUseForSNS" class="btn" type="button" aria-label="この商品でSNS用コピーを更新">
+                <span class="ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M16 8a3 3 0 1 0-2.8-4H13a3 3 0 0 0 3 4Zm-8 8a3 3 0 1 0 2.8 4H11a3 3 0 0 0-3-4Zm0-2c.6 0 1.1.2 1.6.5l7-4A3 3 0 0 1 17 8c0-.6-.2-1.1-.5-1.6l-7 4A3 3 0 0 1 8 14Z"/></svg>
+                </span>
+                SNSコピー更新
+              </button>
+            </div>
+
+            <div class="hint">
+              ※ 送信は行いません。入力内容はこのブラウザに保存され、リロードしても残ります。
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnCloseModal2" class="btn" type="button" aria-label="閉じる">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      /** ===== Data ===== */
+      const SHOP = {
+        name: "まちのパン工房",
+        hours: "7:30-18:00",
+        note: "売り切れ注意",
+      };
+
+      /** @type {Array<{
+       * id:number, name:string, category:string, price:number, description:string, rating:number,
+       * isNew:boolean, tags:string[], createdAt:string,
+       * details:{ingredients:string, allergens:string, bakeTime:string, storage:string},
+       * stock:number
+       * }>} */
+      const products = [
+        {
+          id: 101,
+          name: "湯種もちもち食パン",
+          category: "食パン",
+          price: 380,
+          description: "湯種製法でしっとり。翌日もトーストでふわっと戻る定番。",
+          rating: 5,
+          isNew: false,
+          tags: ["定番", "朝食"],
+          createdAt: "2025-11-10",
+          details: {
+            ingredients: "小麦粉、湯種、バター、砂糖、塩、酵母",
+            allergens: "小麦・乳",
+            bakeTime: "8:30 / 11:00 / 15:00",
+            storage: "常温で1〜2日、冷凍で約2週間",
+          },
+          stock: 0,
+        },
+        {
+          id: 102,
+          name: "塩バターロール",
+          category: "菓子パン",
+          price: 180,
+          description: "表面はカリッ、中はじゅわっ。発酵バターの香りが広がります。",
+          rating: 4,
+          isNew: false,
+          tags: ["人気", "おやつ"],
+          createdAt: "2025-10-22",
+          details: {
+            ingredients: "小麦粉、発酵バター、牛乳、砂糖、塩、酵母",
+            allergens: "小麦・乳",
+            bakeTime: "9:30 / 13:00 / 16:30",
+            storage: "当日中推奨。冷凍可（自然解凍→トースト）",
+          },
+          stock: 0,
+        },
+        {
+          id: 103,
+          name: "自家製カレーパン",
+          category: "惣菜パン",
+          price: 260,
+          description: "玉ねぎの甘みとスパイスのコク。揚げたてが狙い目です。",
+          rating: 5,
+          isNew: false,
+          tags: ["揚げたて", "ランチ"],
+          createdAt: "2025-11-01",
+          details: {
+            ingredients: "小麦粉、牛肉、玉ねぎ、スパイス、パン粉、油",
+            allergens: "小麦・乳（微量）",
+            bakeTime: "10:30 / 12:30 / 14:30",
+            storage: "当日中。温め直しはトースター2〜3分",
+          },
+          stock: 0,
+        },
+        {
+          id: 104,
+          name: "季節のりんごデニッシュ",
+          category: "季節限定",
+          price: 320,
+          description: "じっくり煮たりんごにシナモンの余韻。サクサク層が自慢。",
+          rating: 4,
+          isNew: true,
+          tags: ["季節", "ご褒美"],
+          createdAt: "2025-11-25",
+          details: {
+            ingredients: "小麦粉、バター、りんご、砂糖、シナモン",
+            allergens: "小麦・乳・りんご",
+            bakeTime: "11:30 / 14:00",
+            storage: "当日中推奨。翌日は軽く温めると香り復活",
+          },
+          stock: 0,
+        },
+        {
+          id: 105,
+          name: "明太チーズフランス",
+          category: "惣菜パン",
+          price: 340,
+          description: "外はパリッとフランス生地に、明太マヨとチーズをたっぷり。",
+          rating: 4,
+          isNew: true,
+          tags: ["おつまみ", "満足"],
+          createdAt: "2025-11-20",
+          details: {
+            ingredients: "小麦粉、明太子、マヨネーズ、チーズ、塩",
+            allergens: "小麦・卵・乳",
+            bakeTime: "10:00 / 13:30 / 16:00",
+            storage: "当日中。温め直しはトースター2分",
+          },
+          stock: 0,
+        },
+        {
+          id: 106,
+          name: "ふわふわクリームパン",
+          category: "菓子パン",
+          price: 220,
+          description: "自家炊きカスタード。口どけ重視で軽めの甘さに仕上げました。",
+          rating: 5,
+          isNew: false,
+          tags: ["人気", "定番"],
+          createdAt: "2025-09-30",
+          details: {
+            ingredients: "小麦粉、卵、牛乳、砂糖、バター、バニラ",
+            allergens: "小麦・卵・乳",
+            bakeTime: "9:00 / 12:00 / 15:30",
+            storage: "当日中（クリーム入りのため）",
+          },
+          stock: 0,
+        },
+        {
+          id: 107,
+          name: "くるみ＆レーズン食パン",
+          category: "食パン",
+          price: 450,
+          description: "くるみの香ばしさとレーズンの甘み。チーズとも相性抜群。",
+          rating: 4,
+          isNew: false,
+          tags: ["香ばし", "朝食"],
+          createdAt: "2025-10-05",
+          details: {
+            ingredients: "小麦粉、くるみ、レーズン、バター、砂糖、塩",
+            allergens: "小麦・乳・くるみ",
+            bakeTime: "11:00 / 15:00",
+            storage: "常温で1〜2日、冷凍で約2週間",
+          },
+          stock: 0,
+        },
+        {
+          id: 108,
+          name: "あんバターサンド",
+          category: "菓子パン",
+          price: 300,
+          description: "粒あん×発酵バター。甘じょっぱさがクセになる、午後の定番。",
+          rating: 4,
+          isNew: true,
+          tags: ["ご褒美", "和"],
+          createdAt: "2025-11-18",
+          details: {
+            ingredients: "小麦粉、粒あん、発酵バター、砂糖、塩",
+            allergens: "小麦・乳",
+            bakeTime: "12:00 / 16:00",
+            storage: "当日中推奨。冷蔵はバターが硬くなるため注意",
+          },
+          stock: 0,
+        },
+        {
+          id: 109,
+          name: "枝豆ベーコンエピ",
+          category: "惣菜パン",
+          price: 360,
+          description: "噛むほど旨い。枝豆の食感とベーコンの塩気がベストバランス。",
+          rating: 3,
+          isNew: false,
+          tags: ["食感", "ビールに合う"],
+          createdAt: "2025-10-28",
+          details: {
+            ingredients: "小麦粉、枝豆、ベーコン、塩、酵母",
+            allergens: "小麦・乳（ベーコン加工由来の可能性）",
+            bakeTime: "10:30 / 14:00",
+            storage: "当日中。翌日はトーストで香ばしさ復活",
+          },
+          stock: 0,
+        },
+        {
+          id: 110,
+          name: "ハニーナッツブリオッシュ",
+          category: "季節限定",
+          price: 340,
+          description: "はちみつの香りとナッツのコク。ふんわりリッチな口当たり。",
+          rating: 5,
+          isNew: true,
+          tags: ["季節", "香り"],
+          createdAt: "2025-11-27",
+          details: {
+            ingredients: "小麦粉、卵、バター、はちみつ、ナッツ、砂糖",
+            allergens: "小麦・卵・乳・くるみ（ナッツ類）",
+            bakeTime: "11:00 / 15:30",
+            storage: "当日〜翌日。乾燥しやすいので密封推奨",
+          },
+          stock: 0,
+        },
+      ];
+
+      const CATEGORIES = ["食パン", "菓子パン", "惣菜パン", "季節限定"];
+
+      /** ===== State ===== */
+      const state = {
+        selectedProductId: null,
+        recommendedId: null,
+        filterCategory: "all",
+        sortBy: "popular",
+        searchText: "",
+        reservations: [],
+      };
+
+      /** ===== DOM ===== */
+      const $ = (sel, root = document) => root.querySelector(sel);
+
+      const elShopName = $("#shopName");
+      const elTodayDate = $("#todayDate");
+      const elTodayText = $("#todayText");
+      const elSelectedName = $("#selectedName");
+
+      const elFilterCategory = $("#filterCategory");
+      const elSortBy = $("#sortBy");
+      const elSearchText = $("#searchText");
+      const elResultCount = $("#resultCount");
+
+      const elCards = $("#cards");
+      const elEmptyState = $("#emptyState");
+
+      const elXCopy = $("#xCopy");
+      const elIGCopy = $("#igCopy");
+      const elXLen = $("#xLen");
+      const elIGLen = $("#igLen");
+      const elSnsInfo = $("#snsInfo");
+
+      const elReservationEmpty = $("#reservationEmpty");
+      const elReservationList = $("#reservationList");
+
+      const elBtnPick = $("#btnPick");
+      const elBtnScrollReservation = $("#btnScrollReservation");
+      const elBtnClearReservation = $("#btnClearReservation");
+
+      const elModalBackdrop = $("#modalBackdrop");
+      const elBtnCloseModal = $("#btnCloseModal");
+      const elBtnCloseModal2 = $("#btnCloseModal2");
+      const elModalTitle = $("#modalTitle");
+      const elModalSub = $("#modalSub");
+      const elModalName = $("#modalName");
+      const elModalDesc = $("#modalDesc");
+      const elModalKv = $("#modalKv");
+      const elModalRating = $("#modalRating");
+      const elModalStockText = $("#modalStockText");
+      const elFormTargetName = $("#formTargetName");
+
+      const elReserveForm = $("#reserveForm");
+      const elRName = $("#rName");
+      const elRPhone = $("#rPhone");
+      const elRTime = $("#rTime");
+      const elRQty = $("#rQty");
+      const elRMemo = $("#rMemo");
+
+      const elErrName = $("#errName");
+      const elErrPhone = $("#errPhone");
+      const elErrTime = $("#errTime");
+      const elErrQty = $("#errQty");
+      const elReserveOk = $("#reserveOk");
+
+      const elBtnUseForSNS = $("#btnUseForSNS");
+
+      const elBtnCopyX = $("#btnCopyX");
+      const elBtnCopyIG = $("#btnCopyIG");
+
+      const elToast = $("#toast");
+
+      /** ===== Utils ===== */
+      function formatYmd(date = new Date()) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const d = String(date.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function yen(n) {
+        const num = Number(n);
+        if (!Number.isFinite(num)) return "—";
+        return `${num.toLocaleString("ja-JP")}円`;
+      }
+
+      function clampInt(n, min, max) {
+        const v = Number.parseInt(String(n), 10);
+        if (!Number.isFinite(v)) return min;
+        return Math.min(max, Math.max(min, v));
+      }
+
+      function safeText(s) {
+        return String(s ?? "").replace(/\s+/g, " ").trim();
+      }
+
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function stars(rating) {
+        const r = clampInt(rating, 1, 5);
+        return "★".repeat(r) + "☆".repeat(5 - r);
+      }
+
+      function pickRandomProductId(excludeId = null) {
+        const ids = products.map(p => p.id).filter(id => id !== excludeId);
+        if (ids.length === 0) return excludeId;
+        return ids[Math.floor(Math.random() * ids.length)];
+      }
+
+      function getProductById(id) {
+        return products.find(p => p.id === id) || null;
+      }
+
+      function categoryIcon(category) {
+        switch (category) {
+          case "食パン": return "🍞";
+          case "菓子パン": return "🥐";
+          case "惣菜パン": return "🥪";
+          case "季節限定": return "🍎";
+          default: return "🥖";
+        }
+      }
+
+      function showToast(message) {
+        const msg = safeText(message);
+        if (!msg) return;
+        elToast.textContent = msg;
+        elToast.classList.add("show");
+        window.clearTimeout(showToast._t);
+        showToast._t = window.setTimeout(() => elToast.classList.remove("show"), 1800);
+      }
+
+      async function copyToClipboard(text) {
+        const t = String(text ?? "");
+        if (!t) return false;
+
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(t);
+            return true;
+          }
+        } catch (_) {}
+
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = t;
+          ta.setAttribute("readonly", "true");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          ta.style.top = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+          return ok;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      /** ===== Storage ===== */
+      const STORAGE_KEY = "bakery_promo_reservations_v1";
+
+      function loadReservations() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) return [];
+          return parsed
+            .filter(x => x && typeof x === "object")
+            .slice(0, 30);
+        } catch (_) {
+          return [];
+        }
+      }
+
+      function saveReservations(list) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        } catch (_) {
+          // localStorageが使えない場合は黙って落とす（動作継続）
+        }
+      }
+
+      /** ===== Filtering / Sorting ===== */
+      function matchesFilter(p) {
+        if (!p) return false;
+
+        const cat = state.filterCategory;
+        if (cat !== "all" && p.category !== cat) return false;
+
+        const q = safeText(state.searchText).toLowerCase();
+        if (q) {
+          const hay = `${p.name} ${p.description} ${(p.tags || []).join(" ")}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      }
+
+      function sortProducts(list) {
+        const key = state.sortBy;
+        const arr = [...list];
+
+        if (key === "popular") {
+          arr.sort((a,b) => {
+            const d = (b.rating - a.rating);
+            if (d !== 0) return d;
+            // おすすめを少し上に
+            const ar = (a.id === state.recommendedId) ? -1 : 0;
+            const br = (b.id === state.recommendedId) ? -1 : 0;
+            if (ar !== br) return ar - br;
+            return b.price - a.price;
+          });
+        } else if (key === "priceAsc") {
+          arr.sort((a,b) => {
+            const d = (a.price - b.price);
+            if (d !== 0) return d;
+            return b.rating - a.rating;
+          });
+        } else if (key === "newest") {
+          arr.sort((a,b) => {
+            // createdAt desc
+            const da = new Date(a.createdAt).getTime();
+            const db = new Date(b.createdAt).getTime();
+            const d = (db - da);
+            if (d !== 0) return d;
+            return b.rating - a.rating;
+          });
+        }
+        return arr;
+      }
+
+      /** ===== Rendering ===== */
+      function renderHeader() {
+        elShopName.textContent = SHOP.name;
+        const today = formatYmd(new Date());
+        elTodayDate.textContent = today;
+        elTodayText.textContent = `今日: ${today}`;
+      }
+
+      function renderCards() {
+        const filtered = products.filter(matchesFilter);
+        const sorted = sortProducts(filtered);
+
+        elResultCount.textContent = `${sorted.length} 件`;
+        elCards.innerHTML = "";
+
+        if (sorted.length === 0) {
+          elEmptyState.style.display = "block";
+          return;
+        } else {
+          elEmptyState.style.display = "none";
+        }
+
+        const frag = document.createDocumentFragment();
+        for (const p of sorted) {
+          frag.appendChild(buildCard(p));
+        }
+        elCards.appendChild(frag);
+      }
+
+      function buildCard(p) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "card";
+        btn.setAttribute("aria-label", `${p.name} の詳細を開く`);
+        btn.dataset.id = String(p.id);
+
+        const stock = clampInt(p.stock, 0, 99);
+        const lowStock = stock > 0 && stock <= 3;
+
+        btn.innerHTML = `
+          <div class="badge ${p.id === state.recommendedId ? "show" : ""}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.7H21l-5.4 4 2.1 6.8-5.7-4.1-5.7 4.1 2.1-6.8L3 8.7h6.6L12 2z"/></svg>
+            本日のおすすめ
+          </div>
+          <div class="card-top">
+            <div class="thumb" aria-hidden="true" title="${p.category}">
+              ${breadSvg(categoryIcon(p.category))}
+            </div>
+            <div class="title">
+              <div class="name" title="${escapeHtml(p.name)}">${escapeHtml(p.name)}</div>
+              <div class="meta2">
+                <span class="tag">${escapeHtml(p.category)} ${categoryIcon(p.category)}</span>
+                ${p.isNew ? `<span class="tag new">新商品</span>` : ""}
+                ${lowStock ? `<span class="tag low">残りわずか</span>` : ""}
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="desc">${escapeHtml(p.description)}</div>
+            <div class="price-row">
+              <div class="price">${yen(p.price)}</div>
+              <div class="rating" aria-label="人気度">${stars(p.rating)}</div>
+            </div>
+          </div>
+        `;
+
+        btn.addEventListener("click", () => openModal(p.id));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openModal(p.id);
+          }
+        });
+        return btn;
+      }
+
+      function breadSvg(emoji) {
+        // プレースホルダSVG（外部不要）
+        return `
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="rgba(194,123,56,.35)"/>
+                <stop offset="1" stop-color="rgba(139,92,246,.22)"/>
+              </linearGradient>
+            </defs>
+            <rect x="6" y="10" width="52" height="44" rx="16" fill="url(#g)" stroke="rgba(229,231,235,.9)"/>
+            <text x="32" y="40" text-anchor="middle" font-size="24" font-family="system-ui" fill="rgba(29,29,31,.85)">${emoji}</text>
+          </svg>
+        `;
+      }
+
+      function renderSelectedInfo(p) {
+        if (!p) {
+          elSelectedName.textContent = "未選択";
+          elSnsInfo.textContent = "未選択";
+          return;
+        }
+        elSelectedName.textContent = p.name;
+        elSnsInfo.textContent = `対象: ${p.name}`;
+      }
+
+      function renderSNSCopies(p) {
+        if (!p) {
+          elXCopy.value = "";
+          elIGCopy.value = "";
+          updateLenCounters();
+          renderSelectedInfo(null);
+          return;
+        }
+
+        const today = formatYmd(new Date());
+        const stock = clampInt(p.stock, 0, 99);
+        const stockLine =
+          stock === 0 ? "数量限定、早めのご来店がおすすめです。" :
+          stock <= 3 ? "残りわずかです。お取り置きもどうぞ。" :
+          "お取り置きもOKです。";
+
+        const tags = (p.tags || []).slice(0, 3).map(t => `#${t.replace(/\s+/g,"")}`).join(" ");
+        const catTag = `#${p.category.replace(/\s+/g,"")}`;
+
+        const x = `【${SHOP.name}｜今日のおすすめ】${p.name} ${yen(p.price)}\n${p.description}\n焼き上がり: ${p.details.bakeTime} / ${stockLine}\n${catTag} ${tags}`.slice(0, 100);
+        const ig = `本日のパン情報（${today}）\n\n${p.name}（${p.category}） ${yen(p.price)}\n${p.description}\n\n焼き上がり: ${p.details.bakeTime}\n保存: ${p.details.storage}\n\n${stockLine}\n#${SHOP.name.replace(/\s+/g,"")} ${catTag} ${tags}`.slice(0, 140);
+
+        elXCopy.value = x;
+        elIGCopy.value = ig;
+
+        updateLenCounters();
+        renderSelectedInfo(p);
+      }
+
+      function updateLenCounters() {
+        elXLen.textContent = `${(elXCopy.value || "").length} 文字`;
+        elIGLen.textContent = `${(elIGCopy.value || "").length} 文字`;
+      }
+
+      function renderReservations() {
+        const list = state.reservations || [];
+        if (!Array.isArray(list) || list.length === 0) {
+          elReservationEmpty.style.display = "block";
+          elReservationList.style.display = "none";
+          elReservationList.innerHTML = "";
+          return;
+        }
+        elReservationEmpty.style.display = "none";
+        elReservationList.style.display = "grid";
+
+        elReservationList.innerHTML = "";
+        const frag = document.createDocumentFragment();
+
+        // 新しいものが上
+        const sorted = [...list].sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 8);
+        for (const r of sorted) {
+          const p = getProductById(r.productId);
+          const item = document.createElement("div");
+          item.className = "summary-item";
+          const name = p ? p.name : "（商品不明）";
+          const time = safeText(r.pickupTime);
+          const qty = clampInt(r.qty, 1, 999);
+          const memo = safeText(r.memo);
+          const phone = safeText(r.phone).replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+          const created = r.createdAtYmd || "—";
+
+          item.innerHTML = `
+            <div class="k">${escapeHtml(created)} / 取り置き</div>
+            <div class="v">${escapeHtml(name)} × ${qty}（${escapeHtml(time)}）</div>
+            <div style="margin-top:6px; color:var(--muted); font-size:12px; line-height:1.45;">
+              お名前: ${escapeHtml(r.name)} / TEL: ${escapeHtml(phone)}<br/>
+              ${memo ? `メモ: ${escapeHtml(memo)}` : "メモ: なし"}
+            </div>
+          `;
+          frag.appendChild(item);
+        }
+        elReservationList.appendChild(frag);
+      }
+
+      /** ===== Modal ===== */
+      function openModal(productId) {
+        const p = getProductById(productId);
+        if (!p) return;
+
+        state.selectedProductId = p.id;
+        renderSelectedInfo(p);
+
+        elModalTitle.textContent = `商品詳細`;
+        elModalName.textContent = p.name;
+        elModalDesc.textContent = p.description;
+
+        const badges = [
+          `${p.category} ${categoryIcon(p.category)}`,
+          p.isNew ? "新商品" : null,
+          (p.id === state.recommendedId) ? "本日のおすすめ" : null,
+        ].filter(Boolean);
+
+        elModalSub.innerHTML = badges.map(b => `<span class="tag">${escapeHtml(b)}</span>`).join(" ");
+
+        elModalKv.innerHTML = `
+          <dt>価格</dt><dd><strong>${yen(p.price)}</strong></dd>
+          <dt>原材料</dt><dd>${escapeHtml(p.details.ingredients)}</dd>
+          <dt>アレルゲン</dt><dd>${escapeHtml(p.details.allergens)}</dd>
+          <dt>焼き上がり</dt><dd>${escapeHtml(p.details.bakeTime)}</dd>
+          <dt>保存方法</dt><dd>${escapeHtml(p.details.storage)}</dd>
+        `;
+
+        elModalRating.textContent = stars(p.rating);
+
+        const stock = clampInt(p.stock, 0, 99);
+        const stockText =
+          stock === 0 ? "在庫: 少なめ（早め推奨）" :
+          stock <= 3 ? `在庫: ${stock}（残りわずか）` :
+          `在庫: ${stock}`;
+        elModalStockText.textContent = stockText;
+
+        elFormTargetName.textContent = `対象: ${p.name}`;
+
+        clearFormErrors();
+        elReserveOk.style.display = "none";
+        // フォーム初期値（過去入力を残したい場合はここでしない）
+        elRQty.value = "";
+        elRMemo.value = "";
+        // 名前と電話はユーザーに優しく、前回入力を残す（localStorageは扱わない）
+        elRTime.value = "";
+
+        elModalBackdrop.classList.add("show");
+        elModalBackdrop.setAttribute("aria-hidden", "false");
+
+        // フォーカスをCloseへ
+        elBtnCloseModal.focus();
+
+        // モーダルを開いたらSNSコピーも更新（選択中を優先）
+        renderSNSCopies(p);
+        renderCards(); // おすすめバッジ等再描画
+      }
+
+      function closeModal() {
+        elModalBackdrop.classList.remove("show");
+        elModalBackdrop.setAttribute("aria-hidden", "true");
+      }
+
+      function isModalOpen() {
+        return elModalBackdrop.classList.contains("show");
+      }
+
+      /** ===== Validation ===== */
+      function clearFormErrors() {
+        elErrName.textContent = "";
+        elErrPhone.textContent = "";
+        elErrTime.textContent = "";
+        elErrQty.textContent = "";
+      }
+
+      function validateReservationForm() {
+        clearFormErrors();
+        let ok = true;
+
+        const name = safeText(elRName.value);
+        const phone = safeText(elRPhone.value).replace(/[^\d]/g, "");
+        const time = safeText(elRTime.value);
+        const qtyRaw = safeText(elRQty.value);
+
+        if (!name) {
+          elErrName.textContent = "お名前を入力してください。";
+          ok = false;
+        }
+        if (!phone) {
+          elErrPhone.textContent = "電話番号を入力してください。";
+          ok = false;
+        } else if (!/^\d{10,11}$/.test(phone)) {
+          elErrPhone.textContent = "電話番号は10〜11桁の数字で入力してください（ハイフンなしでも可）。";
+          ok = false;
+        }
+        if (!time) {
+          elErrTime.textContent = "受取希望時間を選択してください。";
+          ok = false;
+        }
+        const qty = Number(qtyRaw);
+        if (!qtyRaw) {
+          elErrQty.textContent = "個数を入力してください。";
+          ok = false;
+        } else if (!Number.isFinite(qty) || qty < 1 || !Number.isInteger(qty)) {
+          elErrQty.textContent = "個数は1以上の整数で入力してください。";
+          ok = false;
+        }
+
+        return {
+          ok,
+          value: {
+            name,
+            phone,
+            pickupTime: time,
+            qty: Number.isFinite(qty) ? qty : 1,
+            memo: safeText(elRMemo.value),
+          }
+        };
+      }
+
+      /** ===== Actions ===== */
+      function initStocks() {
+        // ダミー在庫（リロードしても一定にしたい場合は固定seedが必要。ここは毎回ランダムでOK）
+        for (const p of products) {
+          // 季節限定や新商品は少なめにして「残りわずか」を出しやすく
+          const baseMax = p.category === "季節限定" || p.isNew ? 6 : 10;
+          const v = randomInt(0, baseMax);
+          p.stock = v;
+        }
+      }
+
+      function setRecommended(productId) {
+        const p = getProductById(productId);
+        if (!p) return;
+        state.recommendedId = p.id;
+        // おすすめが選ばれたら選択中にも反映（UX）
+        state.selectedProductId = p.id;
+        renderSNSCopies(p);
+        renderCards();
+      }
+
+      function getSelectedOrRecommended() {
+        const selected = getProductById(state.selectedProductId);
+        if (selected) return selected;
+        const rec = getProductById(state.recommendedId);
+        return rec;
+      }
+
+      function handlePickRecommended() {
+        const nextId = pickRandomProductId(state.recommendedId);
+        setRecommended(nextId);
+        const p = getProductById(nextId);
+        showToast(`本日のおすすめを更新しました：${p ? p.name : "—"}`);
+      }
+
+      function handleFiltersChanged() {
+        state.filterCategory = elFilterCategory.value;
+        state.sortBy = elSortBy.value;
+        state.searchText = elSearchText.value || "";
+        renderCards();
+      }
+
+      function handleReservationSubmit(e) {
+        e.preventDefault();
+
+        const p = getProductById(state.selectedProductId);
+        if (!p) {
+          showToast("商品が選択されていません。カードから商品を選んでください。");
+          return;
+        }
+
+        const res = validateReservationForm();
+        if (!res.ok) {
+          showToast("入力内容を確認してください。");
+          return;
+        }
+
+        const payload = {
+          id: `r_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+          productId: p.id,
+          name: res.value.name,
+          phone: res.value.phone,
+          pickupTime: res.value.pickupTime,
+          qty: res.value.qty,
+          memo: res.value.memo,
+          createdAt: Date.now(),
+          createdAtYmd: formatYmd(new Date()),
+        };
+
+        state.reservations = [payload, ...(state.reservations || [])].slice(0, 30);
+        saveReservations(state.reservations);
+
+        elReserveOk.style.display = "block";
+        elReserveOk.textContent = `予約内容を保存しました（擬似）。「${p.name}」×${payload.qty} / 受取: ${payload.pickupTime}`;
+
+        renderReservations();
+        showToast("予約内容を保存しました。");
+      }
+
+      function handleClearReservations() {
+        state.reservations = [];
+        saveReservations([]);
+        renderReservations();
+        showToast("予約内容を消去しました。");
+      }
+
+      function handleUseForSNS() {
+        const p = getProductById(state.selectedProductId);
+        if (!p) return;
+        renderSNSCopies(p);
+        showToast("SNS用コピーを更新しました。");
+      }
+
+      async function handleCopy(kind) {
+        const text = kind === "x" ? elXCopy.value : elIGCopy.value;
+        const ok = await copyToClipboard(text);
+        showToast(ok ? "コピーしました。" : "コピーに失敗しました。ブラウザの権限をご確認ください。");
+      }
+
+      function scrollToReservation() {
+        const target = $("#reservationSummary");
+        if (!target) return;
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      /** ===== Security-ish for innerHTML text parts ===== */
+      function escapeHtml(str) {
+        return String(str ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      /** ===== Init ===== */
+      function init() {
+        // Shop info
+        elShopName.textContent = SHOP.name;
+        renderHeader();
+
+        // Stocks
+        initStocks();
+
+        // Load reservations
+        state.reservations = loadReservations();
+        renderReservations();
+
+        // Default recommended
+        state.recommendedId = pickRandomProductId(null);
+        state.selectedProductId = state.recommendedId;
+
+        // Controls initial
+        elFilterCategory.value = state.filterCategory;
+        elSortBy.value = state.sortBy;
+        elSearchText.value = state.searchText;
+
+        // Render
+        renderCards();
+        renderSNSCopies(getSelectedOrRecommended());
+
+        // Events
+        elBtnPick.addEventListener("click", handlePickRecommended);
+        elFilterCategory.addEventListener("change", handleFiltersChanged);
+        elSortBy.addEventListener("change", handleFiltersChanged);
+        elSearchText.addEventListener("input", handleFiltersChanged);
+
+        elBtnScrollReservation.addEventListener("click", scrollToReservation);
+        elBtnClearReservation.addEventListener("click", handleClearReservations);
+
+        elBtnCloseModal.addEventListener("click", closeModal);
+        elBtnCloseModal2.addEventListener("click", closeModal);
+
+        elModalBackdrop.addEventListener("click", (e) => {
+          if (e.target === elModalBackdrop) closeModal();
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && isModalOpen()) {
+            e.preventDefault();
+            closeModal();
+          }
+        });
+
+        elReserveForm.addEventListener("submit", handleReservationSubmit);
+        elBtnUseForSNS.addEventListener("click", handleUseForSNS);
+
+        elBtnCopyX.addEventListener("click", () => handleCopy("x"));
+        elBtnCopyIG.addEventListener("click", () => handleCopy("ig"));
+
+        // When modal closes, keep selection but just close
+        // When selection changes, update header selection name
+        // Already covered in renderSNSCopies/renderSelectedInfo
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
